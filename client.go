@@ -22,7 +22,7 @@ type Client struct {
 	*EventEmitter
 }
 
-func Dial(origin string) (*Client, error) {
+func Dial(origin string, client http.Client) (*Client, error) {
 	u, err := url.Parse(origin)
 	if err != nil {
 		return nil, err
@@ -31,7 +31,7 @@ func Dial(origin string) (*Client, error) {
 	u.Path = ""
 
 	url_ := fmt.Sprintf("%s/socket.io/%d/", u.String(), ProtocolVersion)
-	r, err := http.Get(url_)
+	r, err := client.Get(url_)
 	if err != nil {
 		return nil, err
 	}
